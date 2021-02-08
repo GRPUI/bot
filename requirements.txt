@@ -1,4 +1,2 @@
-random.py
 sqlite3.py
 telebot.py
-os.py
