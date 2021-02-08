@@ -5,8 +5,8 @@ from telebot import TeleBot
 from telebot import types
 import os
 
-token = os.environ.get('TOKEN')
-bot: TeleBot = telebot.AsyncTeleBot(str(token))
+#token = os.environ.get('TOKEN')
+bot: TeleBot = telebot.AsyncTeleBot('1540498139:AAE9BneM9X96cedwKV1Wt8jekIhIvuvF7gU')
 
 db = sqlite3.connect('tg-database.db', check_same_thread=False)
 sql = db.cursor()
