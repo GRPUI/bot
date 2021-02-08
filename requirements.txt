@@ -1,3 +1,1 @@
 telebot
-sqlite3
-os
