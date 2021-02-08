@@ -162,12 +162,6 @@ def get_text_messages(message):
             bot.send_message(message.chat.id, text,
                              reply_to_message_id=message.message_id)
     else:
-        if message.text == 'Что я умею❓':
-            bot.send_message(message.from_user.id,
-                             "Я умею назначать роли участникам группы, создавать кланы и организации, а также добавлять в них участников.")
-        if message.text == 'Как добавить бота в чат❓':
-            bot.send_message(message.from_user.id,
-                             'Для того чтобы подлючить бота к чату нужно:\nПредоставить права администратора в чате, остальное он сделает сам')
         if message.text == 'Верификация✅':
             user_id = message.from_user.id
             sql.execute(f"INSERT INTO verified VALUES(?, ?, ?)", (user_id, 'yes', 'no'))
@@ -200,5 +194,3 @@ bot.infinity_polling()
 # markup_menu_1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 # back_btn = types.KeyboardButton('!Назад!')
 # markup_menu_1.add(back_btn)
-
-#
