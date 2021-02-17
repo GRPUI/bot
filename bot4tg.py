@@ -1,4 +1,5 @@
 import random
+from gtts import gTTS
 import sqlite3
 import telebot
 from telebot import TeleBot
@@ -103,12 +104,11 @@ def get_text_messages(message):
                 bot.send_message(message.chat.id, 'Такого клана нет или вы не являетесь лидером клана',
                                  reply_to_message_id=message.message_id)
         if message.text == '!список кланов':
-            bot.send_message(message.chat.id, 'Список кланов:')
+            list_of_clans = 'Список кланов:'
             for value in sql.execute(f"SELECT clan_name FROM clans WHERE chat_id = '{chat_id}'"):
-                bot.send_message(message.chat.id, value)
-        if message.text == '!дай базу' and message.from_user.id == 506368232:
-            for value in sql.execute(f"SELECT creator_id FROM clans WHERE chat_id = '{chat_id}'"):
-                bot.send_message(message.chat.id, value)
+                list_of_clans += '\n--------------------------'
+                list_of_clans += '\n' + value
+            bot.send_message(message.chat.id, list_of_clans)
         if message.text == 'Привет, ботинок':
             if message.from_user.id == 506368232 or message.from_user.id == 908659572:
                 bot.send_message(message.chat.id, 'Здравствуй, создатель. Рад слышать Вас!')
@@ -161,12 +161,23 @@ def get_text_messages(message):
             text += '\n=============' + '\nВерификация в боте - ' + verification
             bot.send_message(message.chat.id, text,
                              reply_to_message_id=message.message_id)
+        if message.text.startswith('!лорд скажи '):
+            print('worked')
+            text = message.text[12:]
+            speech = gTTS(text= text, lang='ru',slow=False)
+            speech.save('speech.ogg')
+            voice = open('speech.ogg', 'rb')
+            bot.send_voice(message.chat.id, voice)
     else:
         if message.text == 'Верификация✅':
             user_id = message.from_user.id
-            sql.execute(f"INSERT INTO verified VALUES(?, ?, ?)", (user_id, 'yes', 'no'))
-            db.commit()
-            bot.send_message(message.chat.id, 'Вы успешно верифицированы', reply_markup=markup_menu_zero)
+            sql.execute(f"SELECT id FROM verified WHERE id = '{user_id}'")
+            if sql.fetchone() is None:
+                sql.execute(f"INSERT INTO verified VALUES(?, ?, ?)", (user_id, 'yes', 'no'))
+                db.commit()
+                bot.send_message(message.chat.id, 'Вы успешно верифицированы', reply_markup=markup_menu_rpg_start)
+            else:
+                bot.send_message(message.chat.id, 'Вы уже верифицированы', reply_markup=markup_menu_zero)
         else:
             return chat_id
 
