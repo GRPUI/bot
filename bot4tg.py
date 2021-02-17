@@ -107,7 +107,7 @@ def get_text_messages(message):
             list_of_clans = 'Список кланов:'
             for value in sql.execute(f"SELECT clan_name FROM clans WHERE chat_id = '{chat_id}'"):
                 list_of_clans += '\n--------------------------'
-                list_of_clans += '\n' + value
+                list_of_clans += '\n' + str(value)
             bot.send_message(message.chat.id, list_of_clans)
         if message.text == 'Привет, ботинок':
             if message.from_user.id == 506368232 or message.from_user.id == 908659572:
