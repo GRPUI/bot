@@ -5,6 +5,7 @@ import telebot
 from telebot import TeleBot
 from telebot import types
 import os
+import time
 
 token = os.environ.get('TOKEN')
 bot: TeleBot = telebot.AsyncTeleBot(str(token))
@@ -162,11 +163,20 @@ def get_text_messages(message):
             bot.send_message(message.chat.id, text,
                              reply_to_message_id=message.message_id)
         if message.text.startswith('!лорд скажи '):
-            print('worked')
             text = message.text[12:]
-            speech = gTTS(text= text, lang='ru',slow=False)
+            speech = gTTS(text=text, lang='ru',slow=False)
             speech.save('speech.ogg')
             voice = open('speech.ogg', 'rb')
+            bot.send_chat_action(message.chat.id, 'record_audio')
+            time.sleep(1)
+            bot.send_voice(message.chat.id, voice)
+        if message.text.startswith('!lxrd say '):
+            text = message.text[10:]
+            speech = gTTS(text=text, lang='en', slow=False)
+            speech.save('speech.ogg')
+            voice = open('speech.ogg', 'rb')
+            bot.send_chat_action(message.chat.id, 'record_audio')
+            time.sleep(1)
             bot.send_voice(message.chat.id, voice)
     else:
         if message.text == 'Верификация✅':
