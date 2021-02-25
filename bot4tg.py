@@ -8,7 +8,7 @@ import os
 import time
 
 token = os.environ.get('TOKEN')
-bot: TeleBot = telebot.AsyncTeleBot(str(token))
+bot: TeleBot = telebot.TeleBot(str(token))
 
 db = sqlite3.connect('tg-database.db', check_same_thread=False)
 sql = db.cursor()
@@ -198,8 +198,10 @@ def new_chat_members(message):
     if message.from_user.last_name is not None:
         user_name += ' ' + str(message.from_user.last_name)
     greeting = 'Добро пожаловать в царство ужасов, ' + str(user_name)
-    bot.send_message(message.chat.id, greeting, reply_to_message_id=message.message_id)
-
+    msg = bot.send_message(message.chat.id, greeting, reply_to_message_id=message.message_id)
+    time.sleep(3)
+    bot.delete_message(msg.chat.id, msg.message_id)
+    
 
 @bot.message_handler(content_types=['left_chat_member'])
 def new_chat_members(message):
