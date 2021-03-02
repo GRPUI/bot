@@ -197,7 +197,7 @@ def new_chat_members(message):
     user_name = str(message.from_user.first_name) + ' '
     if message.from_user.last_name is not None:
         user_name += ' ' + str(message.from_user.last_name)
-    greeting = 'Добро пожаловать в царство ужасов, ' + str(user_name)
+    greeting = 'Добро пожаловать в царство ужасов, ' + str(user_name) + "\nСкоро все начнётся"
     msg = bot.send_message(message.chat.id, greeting, reply_to_message_id=message.message_id)
     time.sleep(3)
     bot.delete_message(msg.chat.id, msg.message_id)
@@ -209,7 +209,9 @@ def new_chat_members(message):
     if message.from_user.last_name is not None:
         user_name += ' ' + str(message.from_user.last_name)
     farewell = 'Rest In Peace ' + str(user_name)
-    bot.send_message(message.chat.id, farewell, reply_to_message_id=message.message_id)
+    msg = bot.send_message(message.chat.id, farewell, reply_to_message_id=message.message_id)
+    time.sleep(3)
+    bot.delete_message(msg.chat.id, msg.message_id)
 
 
 bot.infinity_polling()
