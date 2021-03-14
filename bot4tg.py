@@ -197,7 +197,7 @@ def new_chat_members(message):
     user_name = str(message.from_user.first_name) + ' '
     if message.from_user.last_name is not None:
         user_name += ' ' + str(message.from_user.last_name)
-    greeting = 'Добро пожаловать в царство ужасов, ' + str(user_name) + "\nСкоро все начнётся"
+    greeting = 'Добро пожаловать в царство ужасов, ' + str(user_name)
     msg = bot.send_message(message.chat.id, greeting, reply_to_message_id=message.message_id)
     time.sleep(3)
     bot.delete_message(msg.chat.id, msg.message_id)
